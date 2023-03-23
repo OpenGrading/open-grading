@@ -1,0 +1,58 @@
+version: "3.5"
+services:
+  db:
+    image: postgres:15-alpine
+    restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=ogr
+    ports:
+      - '5432:5432'
+    volumes: 
+      - db:/var/lib/postgresql/data
+    networks:
+      - app-network
+
+  api:
+    build:
+      dockerfile: docker/ogr-backend.Dockerfile
+      context: ..
+      target: production
+    environment:
+      - DATABASE_URL=postgresql://postgres:postgres@db:5432/ogr
+    networks:
+      - app-network
+    depends_on:
+      - db
+
+  frontend:
+    build:
+      dockerfile: docker/ogr-frontend.Dockerfile
+      context: ..
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    networks:
+      - app-network
+    depends_on:
+      - api
+
+  prisma_migration:
+    build:
+      dockerfile: docker/ogr-backend.Dockerfile
+      context: ..
+      target: migration
+    environment:
+      - DATABASE_URL=postgresql://postgres:postgres@db:5432/ogr
+    restart: "no"
+    networks:
+      - app-network
+    depends_on:
+      - db
+
+networks:
+   app-network:
+
+volumes:
+  db:

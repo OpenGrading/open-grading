@@ -1,0 +1,23 @@
+# python cache
+__pycache__
+
+#db files
+*.db
+
+# Logs
+logs
+*.log
+*.local
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+.vim
+.nlsp-settings

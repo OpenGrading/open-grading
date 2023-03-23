@@ -1,0 +1,40 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// generator
+generator client {
+  provider             = "prisma-client-py"
+  recursive_type_depth = 5
+}
+
+model User {
+  id                    Int       @id @default(autoincrement())
+  email                 String    @unique
+  first_name            String
+  last_name             String
+  participating_reviews Review[]
+  authored_reviews      Review[]  @relation("review_author")
+  reviewing_reviews     Review[]  @relation("review_reviewer")
+  tags                  UserTag[]
+}
+
+model Review {
+  id           Int    @id @default(autoincrement())
+  author_id    Int
+  author       User   @relation("review_author", fields: [author_id], references: [id])
+  participants User[]
+  reviewers    User[] @relation("review_reviewer")
+}
+
+model UserTag {
+  id    Int    @id @default(autoincrement())
+  text  String @unique
+  users User[]
+}
+
+model ReviewTemplate {
+  id              Int    @id @default(autoincrement())
+  author_id       Int
+}
