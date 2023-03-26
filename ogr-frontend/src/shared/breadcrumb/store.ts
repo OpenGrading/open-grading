@@ -1,7 +1,5 @@
 import { atom } from "nanostores";
-import Breadcrumb from "./model";
+import type { Routes } from "../../app/router";
 
-export const $breadcrumbs = atom<Breadcrumb[]>([
-  {url: "/", text: "Home"},
-  {url: "/user", text: "User"}
+export const $breadcrumbs = atom<Routes[]>([
 ]);

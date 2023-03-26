@@ -1,10 +1,18 @@
 import { useStore } from "@nanostores/react";
-import { router } from "../../app/router";
+import { $currentRoute, NAVIGATION, router } from "../../app/router";
 import HomePage from "../../pages/HomePage";
 import UserProfile from "../../pages/UserProfile";
+import { $breadcrumbs } from "../../shared/breadcrumb/store";
 
 function Main() {
   const page = useStore(router);
+
+
+  if (page) {
+    $currentRoute.set(page.route);
+    if (NAVIGATION.map(n => n.route).includes(page.route)) $breadcrumbs.set([page?.route])
+  }
+  console.log(page)
   
   switch (page?.route) {
     case "home":

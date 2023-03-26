@@ -1,4 +1,5 @@
-import { Container, Grid, GridItem } from "@chakra-ui/react";
+import { Container, Grid, GridItem, useBreakpointValue } from "@chakra-ui/react";
+import useNarrowLayout from "../../shared/hooks/useNarrowLayout";
 
 interface Layout {
   header: JSX.Element;
@@ -7,28 +8,38 @@ interface Layout {
   footer: JSX.Element;
 }
 
+const wideLayout = `"header header"
+                    "nav main"
+                    "footer footer"`;
+const narrowLayout = `"header"
+                    "main"
+                    "footer"`;
+
 function Layout({ header, sidebar, main, footer }: Layout) {
+  const isNarrow = useNarrowLayout();
+  console.log(isNarrow);
+
   return (
     <Grid
-      templateAreas={`"header header"
-                    "nav main"
-                    "nav footer"`}
+      templateAreas={isNarrow ? narrowLayout : wideLayout}
       gridTemplateRows={"50fr 1fr 30px"}
-      gridTemplateColumns={"150px 1fr"}
-      h="0.5"
+      gridTemplateColumns={isNarrow ? "1fr" : "150px 1fr"}
+      h="1"
       gap="1"
+      padding={["16px", null, "32px"]}
     >
-      {" "}
-      <GridItem pl="2" bg="orange.300" area={"header"}>
+      <GridItem pl="2" area={"header"} padding="0">
         {header}
       </GridItem>
-      <GridItem pl="2" bg="pink.300" area={"nav"}>
-        {sidebar}
+      {isNarrow ? null : (
+        <GridItem pl="2" area={"nav"} padding="0">
+          {sidebar}
+        </GridItem>
+      )}
+      <GridItem pl="2" area={"main"} padding="0">
+        {main}
       </GridItem>
-      <GridItem pl="2" bg="green.300" area={"main"}>
-        <Container>{main}</Container>
-      </GridItem>
-      <GridItem pl="2" bg="blue.300" area={"footer"}>
+      <GridItem pl="2" area={"footer"} padding="0" margin={["0 -16px", null, "0 -32px"]}>
         {footer}
       </GridItem>
     </Grid>
