@@ -34,7 +34,53 @@ model UserTag {
   users User[]
 }
 
-model ReviewTemplate {
-  id              Int    @id @default(autoincrement())
-  author_id       Int
+// ***
+// * Models for Grade System
+// ***
+enum GradeSystemType {
+  SINGLE_GRADE
+  MULTIPLE_GRADES
+
+  @@map("grade_system_type")
+}
+
+model Grade_System {
+  id   Int    @id @default(autoincrement())
+  name String
+
+  created_at              DateTime               @default(now())
+  updated_at              DateTime               @updatedAt
+  variants                Grade_System_Variant[]
+  current_variant         Grade_System_Variant   @relation("current_variant", fields: [grade_system_variant_id], references: [id])
+  grade_system_variant_id Int                    @unique
+
+  @@map("grade_system")
+}
+
+model Grade_System_Variant {
+  id          Int             @id @default(autoincrement())
+  description String?
+  grades      Grade[]
+  type        GradeSystemType
+
+  created_at           DateTime      @default(now())
+  updated_at           DateTime      @updatedAt
+  grade_system         Grade_System?  @relation(fields: [grade_system_id], references: [id])
+  current_grade_system Grade_System? @relation("current_variant")
+  grade_system_id      Int?
+
+  @@map("grade_system_variant")
+}
+
+model Grade {
+  id          Int     @id @default(autoincrement())
+  name        String
+  value       Float
+  level       Int?
+  description String?
+
+  created_at           DateTime             @default(now())
+  updated_at           DateTime             @updatedAt
+  grade_system_variant Grade_System_Variant @relation(fields: [grade_system_id], references: [id])
+  grade_system_id      Int
 }

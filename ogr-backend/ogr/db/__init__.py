@@ -1,6 +1,9 @@
-from contextlib import contextmanager
+from contextlib import asynccontextmanager
+import logging
 from prisma import Prisma
+from prisma.errors import PrismaError
 
+logger = logging.getLogger(__name__)
 
 class DataProvider:
     def __init__(self) -> None:
@@ -15,9 +18,20 @@ class DataProvider:
     def cursor(self):
         return self.db
 
-    @contextmanager
-    def manager(self):
-        yield self.db
+    @asynccontextmanager
+    async def manager(self):
+        try:
+            logger.info("[db] begin transaction")
+            await self.db.execute_raw("BEGIN")
+            yield self.db
+            logger.info("[db] commit transaction")
+            await self.db.execute_raw("COMMIT")
+        except PrismaError as e:
+            await self.db.execute_raw("ROLLBACK")
+            logger.info("[db] rollback transaction")
+            logger.error(f"[db] error while performing db-request: {e}")
+            raise
+
 
 
 DB = DataProvider()

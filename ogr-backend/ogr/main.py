@@ -1,3 +1,5 @@
+import logging
+import logging.config
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from prisma.errors import UniqueViolationError
@@ -5,8 +7,14 @@ from ogr.db import DB
 from ogr.db import user
 
 from ogr.models.user import NewUserDTO, UserDTO
-from ogr.routes import users
+from ogr.routes import users, grade_systems
 
+with open("ogr/logging.conf") as conf:
+    logging.config.fileConfig(conf, disable_existing_loggers=False)
+
+logger = logging.getLogger(__name__)
+
+logger.info("initialising application")
 app = FastAPI()
 
 app.add_middleware(
@@ -21,13 +29,19 @@ app.add_middleware(
 @app.on_event("startup")
 async def startup():
     await DB.connect()
+    logger.info("db started")
 
 
 @app.on_event("shutdown")
 async def shutdown():
+    logger.info("shutting down")
     await DB.disconnect()
+    logger.info("disconnected from db")
+
 
 app.include_router(users.router)
+app.include_router(grade_systems.router)
+
 
 @app.get("/", response_model=dict[str, list[UserDTO]])
 async def index():
