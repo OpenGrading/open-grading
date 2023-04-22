@@ -1,5 +1,6 @@
 import logging
 from contextlib import asynccontextmanager
+from typing import AsyncGenerator
 
 from prisma.errors import PrismaError
 
@@ -12,17 +13,17 @@ class DataProvider:
     def __init__(self) -> None:
         self.db = Prisma()
 
-    async def connect(self):
+    async def connect(self) -> None:
         await self.db.connect()
 
-    async def disconnect(self):
+    async def disconnect(self) -> None:
         await self.db.disconnect()
 
-    def cursor(self):
+    def cursor(self) -> Prisma:
         return self.db
 
     @asynccontextmanager
-    async def manager(self):
+    async def manager(self) -> AsyncGenerator[Prisma, None]:
         try:
             logger.info("[db] begin transaction")
             await self.db.execute_raw("BEGIN")

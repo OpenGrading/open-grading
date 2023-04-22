@@ -1,13 +1,8 @@
 from datetime import datetime
-from enum import Enum
 from typing import List, Optional
 
+from prisma.enums import GradeSystemType
 from pydantic import BaseModel
-
-
-class GradeSystemType(str, Enum):
-    SINGLE_GRADE = "SINGLE_GRADE"
-    MULTIPLE_GRADES = "MULTIPLE_GRADES"
 
 
 class GradeDTO(BaseModel):

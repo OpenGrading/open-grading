@@ -15,5 +15,5 @@ class AppConfig(BaseSettings):
 
 
 @lru_cache
-def get_config():
+def get_config() -> AppConfig:
     return AppConfig()

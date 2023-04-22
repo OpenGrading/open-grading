@@ -1,5 +1,8 @@
 import logging
 
+from prisma.enums import GradeSystemType
+from prisma.models import Grade_System, Grade_System_Variant
+
 from ogr.db import DB
 from ogr.models.grade_system import (
     GradeSystemUpdateDTO,
@@ -11,12 +14,12 @@ logger = logging.getLogger(__name__)
 
 
 async def get_grade_systems(
-    take=100,
-    skip=0,
+    take: int = 100,
+    skip: int = 0,
     *,
-    load_current_variant=False,
-    load_all_variants=False,
-):
+    load_current_variant: bool = False,
+    load_all_variants: bool = False,
+) -> list[Grade_System]:
     async with DB.manager() as data:
         grade_systems = await data.grade_system.find_many(
             take,
@@ -36,8 +39,8 @@ async def get_grade_systems(
 
 
 async def get_grade_system(
-    id: int, load_current_variant=False, load_all_variants=False
-):
+    id: int, load_current_variant: bool = False, load_all_variants: bool = False
+) -> Grade_System | None:
     async with DB.manager() as data:
         grade_system = await data.grade_system.find_first(
             where={"id": id},
@@ -56,11 +59,11 @@ async def get_grade_system(
 
 async def create_grade_system_variant(
     grade_system: GradeSystemVariantDTO | NewGradeSystemDTO,
-):
+) -> Grade_System_Variant:
     async with DB.manager() as data:
         return await data.grade_system_variant.create(
             {
-                "type": grade_system.type.value,
+                "type": grade_system.type,
                 "description": grade_system.description,
                 "grades": {
                     "create": [
@@ -80,7 +83,7 @@ async def create_grade_system_variant(
         )
 
 
-async def create_grade_system(grade_system: NewGradeSystemDTO):
+async def create_grade_system(grade_system: NewGradeSystemDTO) -> Grade_System:
     async with DB.manager() as data:
         variant = await create_grade_system_variant(grade_system)
         return await data.grade_system.create(
@@ -99,7 +102,9 @@ async def create_grade_system(grade_system: NewGradeSystemDTO):
         )
 
 
-async def update_grade_system(grade_system: GradeSystemUpdateDTO):
+async def update_grade_system(
+    grade_system: GradeSystemUpdateDTO,
+) -> Grade_System | None:
     async with DB.manager() as data:
         variant = await create_grade_system_variant(grade_system.current_variant)
         return await data.grade_system.update(
@@ -112,6 +117,6 @@ async def update_grade_system(grade_system: GradeSystemUpdateDTO):
         )
 
 
-async def delete_grade_system(id: int):
+async def delete_grade_system(id: int) -> None:
     async with DB.manager() as data:
         await data.grade_system.delete(where={"id": id})

@@ -21,6 +21,7 @@ logger.info("initialising application")
 
 
 app = FastAPI(debug=True)
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -31,13 +32,13 @@ app.add_middleware(
 
 
 @app.on_event("startup")
-async def startup():
+async def startup() -> None:
     await DB.connect()
     logger.info("db started")
 
 
 @app.on_event("shutdown")
-async def shutdown():
+async def shutdown() -> None:
     logger.info("shutting down")
     await DB.disconnect()
     logger.info("disconnected from db")
@@ -48,5 +49,5 @@ app.include_router(grade_systems.router)
 
 
 @app.exception_handler(PrismaError)
-async def prisma_exception_handler():
+async def prisma_exception_handler() -> PlainTextResponse:
     return PlainTextResponse("Internal Server Error", status_code=503)
