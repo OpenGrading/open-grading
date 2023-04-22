@@ -1,9 +1,13 @@
 import logging
+
 from fastapi import APIRouter, HTTPException
-from prisma.types import Grade_System_VariantInclude, Grade_System_VariantIncludeFromGrade_System
 
 from ogr.db import grade_system
-from ogr.models.grade_system import GradeSystemDTO, NewGradeSystemDTO
+from ogr.models.grade_system import (
+    GradeSystemDTO,
+    GradeSystemUpdateDTO,
+    NewGradeSystemDTO,
+)
 
 router = APIRouter(prefix="/grade-systems", tags=["grade-systems"])
 logger = logging.getLogger(__name__)
@@ -35,6 +39,12 @@ async def get_grade_system(
 async def create_grade_system(grade_system_data: NewGradeSystemDTO):
     gs = await grade_system.create_grade_system(grade_system_data)
     logger.debug(gs)
+    return {"gradeSystem": gs}
+
+
+@router.put("/{grade_system_id}", response_model=dict[str, GradeSystemDTO])
+async def update_grade_system(grade_system_data: GradeSystemUpdateDTO):
+    gs = await grade_system.update_grade_system(grade_system_data)
     return {"gradeSystem": gs}
 
 

@@ -1,22 +1,26 @@
 import logging
 import logging.config
-from fastapi import FastAPI, HTTPException
+
+from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from prisma.errors import UniqueViolationError
+from fastapi.responses import PlainTextResponse
+from prisma.errors import PrismaError
+
+from ogr.config import get_config
 from ogr.db import DB
-from ogr.db import user
+from ogr.routes import grade_systems, users
 
-from ogr.models.user import NewUserDTO, UserDTO
-from ogr.routes import users, grade_systems
+config = get_config()
 
-with open("ogr/logging.conf") as conf:
+with open(config.log_config) as conf:
     logging.config.fileConfig(conf, disable_existing_loggers=False)
 
 logger = logging.getLogger(__name__)
 
 logger.info("initialising application")
-app = FastAPI()
 
+
+app = FastAPI(debug=True)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -43,15 +47,6 @@ app.include_router(users.router)
 app.include_router(grade_systems.router)
 
 
-@app.get("/", response_model=dict[str, list[UserDTO]])
-async def index():
-    users = await user.get_users(with_tags=True)
-    return {"users": users}
-
-
-@app.post("/", response_model=UserDTO)
-async def index_post(user_data: NewUserDTO):
-    try:
-        return await user.create_user(user_data)
-    except UniqueViolationError as e:
-        raise HTTPException(status_code=409, detail=e.meta.get("target"))
+@app.exception_handler(PrismaError)
+async def prisma_exception_handler():
+    return PlainTextResponse("Internal Server Error", status_code=503)

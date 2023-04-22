@@ -1,9 +1,10 @@
 import logging
+
 from ogr.db import DB
 from ogr.models.grade_system import (
+    GradeSystemUpdateDTO,
     GradeSystemVariantDTO,
     NewGradeSystemDTO,
-    GradeSystemDTO,
 )
 
 logger = logging.getLogger(__name__)
@@ -98,11 +99,9 @@ async def create_grade_system(grade_system: NewGradeSystemDTO):
         )
 
 
-async def update_grade_system(
-    grade_system: GradeSystemDTO, grade_system_variant: GradeSystemVariantDTO
-):
+async def update_grade_system(grade_system: GradeSystemUpdateDTO):
     async with DB.manager() as data:
-        variant = await create_grade_system_variant(grade_system_variant)
+        variant = await create_grade_system_variant(grade_system.current_variant)
         return await data.grade_system.update(
             data={
                 "name": grade_system.name,

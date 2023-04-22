@@ -16,5 +16,6 @@ class NewUserDTO(UserBase):
 class UserDTO(UserBase):
     id: int
 
+
 class UserProfileDTO(UserDTO):
     tags: list[UserTagDTO]

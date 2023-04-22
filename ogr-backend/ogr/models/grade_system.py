@@ -1,6 +1,7 @@
 from datetime import datetime
 from enum import Enum
 from typing import List, Optional
+
 from pydantic import BaseModel
 
 
@@ -59,6 +60,10 @@ class GradeSystemDTO(BaseModel):
 
     class Config:
         orm_mode = True
+
+
+class GradeSystemUpdateDTO(GradeSystemDTO):
+    current_variant: GradeSystemVariantDTO
 
 
 class NewGradeSystemDTO(NewGradeSystemVariantDTO):

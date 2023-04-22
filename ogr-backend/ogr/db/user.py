@@ -4,7 +4,9 @@ from ogr.models.user import NewUserDTO, UserDTO
 
 async def get_users(take=100, skip=0, with_tags=False):
     async with DB.manager() as data:
-        users = await data.user.find_many(take, skip, where={}, include={"tags": with_tags})
+        users = await data.user.find_many(
+            take, skip, where={}, include={"tags": with_tags}
+        )
         return users
 
 

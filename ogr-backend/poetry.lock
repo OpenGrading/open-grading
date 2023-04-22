@@ -56,7 +56,7 @@ uvloop = ["uvloop (>=0.15.2)"]
 name = "certifi"
 version = "2022.12.7"
 description = "Python package for providing Mozilla's CA Bundle."
-category = "main"
+category = "dev"
 optional = false
 python-versions = ">=3.6"
 
@@ -149,7 +149,7 @@ python-versions = ">=3.7"
 name = "httpcore"
 version = "0.16.3"
 description = "A minimal low-level HTTP client."
-category = "main"
+category = "dev"
 optional = false
 python-versions = ">=3.7"
 
@@ -167,7 +167,7 @@ socks = ["socksio (>=1.0.0,<2.0.0)"]
 name = "httpx"
 version = "0.23.3"
 description = "The next generation HTTP client."
-category = "main"
+category = "dev"
 optional = false
 python-versions = ">=3.7"
 
@@ -200,10 +200,24 @@ optional = false
 python-versions = ">=3.7"
 
 [[package]]
+name = "isort"
+version = "5.12.0"
+description = "A Python utility / library to sort Python imports."
+category = "dev"
+optional = false
+python-versions = ">=3.8.0"
+
+[package.extras]
+colors = ["colorama (>=0.4.3)"]
+pipfile-deprecated-finder = ["pip-shims (>=0.5.2)", "pipreqs", "requirementslib"]
+plugins = ["setuptools"]
+requirements-deprecated-finder = ["pip-api", "pipreqs"]
+
+[[package]]
 name = "jinja2"
 version = "3.1.2"
 description = "A very fast and expressive template engine."
-category = "main"
+category = "dev"
 optional = false
 python-versions = ">=3.7"
 
@@ -217,7 +231,7 @@ i18n = ["Babel (>=2.7)"]
 name = "markupsafe"
 version = "2.1.2"
 description = "Safely add untrusted strings to HTML/XML markup."
-category = "main"
+category = "dev"
 optional = false
 python-versions = ">=3.7"
 
@@ -252,7 +266,7 @@ python-versions = ">=3.5"
 name = "nodeenv"
 version = "1.7.0"
 description = "Node.js virtual environment builder"
-category = "main"
+category = "dev"
 optional = false
 python-versions = ">=2.7,!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*,!=3.4.*,!=3.5.*,!=3.6.*"
 
@@ -303,7 +317,7 @@ testing = ["pytest", "pytest-benchmark"]
 name = "prisma"
 version = "0.8.2"
 description = "Prisma Client Python is an auto-generated and fully type-safe database client"
-category = "main"
+category = "dev"
 optional = false
 python-versions = ">=3.7.0"
 
@@ -361,7 +375,7 @@ testing = ["argcomplete", "hypothesis (>=3.56)", "mock", "nose", "pygments (>=2.
 name = "python-dotenv"
 version = "1.0.0"
 description = "Read key-value pairs from a .env file and set them as environment variables"
-category = "main"
+category = "dev"
 optional = false
 python-versions = ">=3.8"
 
@@ -372,7 +386,7 @@ cli = ["click (>=5.0)"]
 name = "rfc3986"
 version = "1.5.0"
 description = "Validating URI References per RFC 3986"
-category = "main"
+category = "dev"
 optional = false
 python-versions = "*"
 
@@ -386,7 +400,7 @@ idna2008 = ["idna"]
 name = "setuptools"
 version = "67.6.0"
 description = "Easily download, build, install, upgrade, and uninstall Python packages"
-category = "main"
+category = "dev"
 optional = false
 python-versions = ">=3.7"
 
@@ -429,7 +443,7 @@ python-versions = ">=3.7"
 name = "tomlkit"
 version = "0.11.6"
 description = "Style preserving TOML library"
-category = "main"
+category = "dev"
 optional = false
 python-versions = ">=3.6"
 
@@ -459,7 +473,7 @@ standard = ["colorama (>=0.4)", "httptools (>=0.5.0)", "python-dotenv (>=0.13)",
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.10"
-content-hash = "9b358dc57f42238dcededd8dfec798a63ace8b9009317be80d85215af6055b85"
+content-hash = "6ed5547aafded13227b157a1ad94335d320bd77cf14b837c6c500141e74697dd"
 
 [metadata.files]
 anyio = [
@@ -544,6 +558,10 @@ idna = [
 iniconfig = [
     {file = "iniconfig-2.0.0-py3-none-any.whl", hash = "sha256:b6a85871a79d2e3b22d2d1b94ac2824226a63c6b741c88f7ae975f18b6778374"},
     {file = "iniconfig-2.0.0.tar.gz", hash = "sha256:2d91e135bf72d31a410b17c16da610a82cb55f6b0477d1a902134b24a455b8b3"},
+]
+isort = [
+    {file = "isort-5.12.0-py3-none-any.whl", hash = "sha256:f84c2818376e66cf843d497486ea8fed8700b340f308f076c6fb1229dff318b6"},
+    {file = "isort-5.12.0.tar.gz", hash = "sha256:8bef7dde241278824a6d83f44a544709b065191b95b6e50894bdc722fcba0504"},
 ]
 jinja2 = [
     {file = "Jinja2-3.1.2-py3-none-any.whl", hash = "sha256:6088930bfe239f0e6710546ab9c19c9ef35e29792895fed6e6e31a023a182a61"},

@@ -1,9 +1,12 @@
-from contextlib import asynccontextmanager
 import logging
-from prisma import Prisma
+from contextlib import asynccontextmanager
+
 from prisma.errors import PrismaError
 
+from prisma import Prisma
+
 logger = logging.getLogger(__name__)
+
 
 class DataProvider:
     def __init__(self) -> None:
@@ -31,7 +34,6 @@ class DataProvider:
             logger.info("[db] rollback transaction")
             logger.error(f"[db] error while performing db-request: {e}")
             raise
-
 
 
 DB = DataProvider()

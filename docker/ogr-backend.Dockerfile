@@ -1,12 +1,12 @@
 FROM python:3.10-alpine as base
 
-ARG YOUR_ENV
-
 ENV   PYTHONHASHSEED=random \
   PIP_NO_CACHE_DIR=off \
   PIP_DISABLE_PIP_VERSION_CHECK=on \
   PIP_DEFAULT_TIMEOUT=100 \
-  POETRY_VERSION=1.2.2
+  POETRY_VERSION=1.2.2 \
+  API_HOST="0.0.0.0" \
+  API_PORT=8000
 
 RUN apk add --update --no-cache --virtual .tmp-build-deps \
   gcc libc-dev nodejs npm \
@@ -33,4 +33,4 @@ RUN npx prisma generate
 
 COPY ogr-backend/ogr /app/ogr
 
-CMD [ "poetry", "run", "uvicorn", "ogr.main:app", "--host", "0.0.0.0"]
+CMD uvicorn ogr.main:app --host $API_HOST --port $API_PORT

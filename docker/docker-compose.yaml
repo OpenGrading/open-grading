@@ -8,24 +8,24 @@ services:
       - POSTGRES_PASSWORD=postgres
       - POSTGRES_DB=ogr
     ports:
-      - '5432:5432'
-    volumes: 
+      - "5432:5432"
+    volumes:
       - db:/var/lib/postgresql/data
     networks:
       - app-network
-
   api:
     build:
       dockerfile: docker/ogr-backend.Dockerfile
       context: ..
       target: production
     environment:
+      - API_HOST=0.0.0.0
+      - API_PORT=8000
       - DATABASE_URL=postgresql://postgres:postgres@db:5432/ogr
     networks:
       - app-network
     depends_on:
       - db
-
   frontend:
     build:
       dockerfile: docker/ogr-frontend.Dockerfile
@@ -37,7 +37,6 @@ services:
       - app-network
     depends_on:
       - api
-
   prisma_migration:
     build:
       dockerfile: docker/ogr-backend.Dockerfile
@@ -50,9 +49,7 @@ services:
       - app-network
     depends_on:
       - db
-
 networks:
-   app-network:
-
+  app-network:
 volumes:
   db:

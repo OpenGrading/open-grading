@@ -17,6 +17,19 @@ prisma = "^0.8.2"
 pytest = "^7.2.2"
 black = "^23.1.0"
 mypy = "^1.1.1"
+isort = "^5.12.0"
+
+[tool.pyright]
+
+[tool.mypy]
+python_version = "3.10"
+strict = true
+
+[tool.isort]
+profile = "black"
+skip_gitignore=true
+line_length=100
+
 
 [build-system]
 requires = ["poetry-core>=1.2.2"]
