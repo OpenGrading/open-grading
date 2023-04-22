@@ -18,17 +18,15 @@ const PAGES = [
   },
 ] as const;
 
-export const NAVIGATION = PAGES.filter(page => !page.hideFromNavigation);
+export const NAVIGATION = PAGES.filter((page) => !page.hideFromNavigation);
 
 export type Routes = (typeof PAGES)[number]["route"];
-type Urls = (typeof PAGES)[number]["url"];
-type RoutesToUrls<T extends typeof PAGES> = { [K in T[number] as K["route"]]: K["url"] };
-type B = RoutesToUrls<typeof PAGES>;
+type MapRoutesToUrls<T extends typeof PAGES> = { [K in T[number] as K["route"]]: K["url"] };
+type RoutesToUrls = MapRoutesToUrls<typeof PAGES>;
 
-const NAV = PAGES.reduce<{ [K in Routes]: Urls }>((config, page) => {
-  config[page.route] = page.url;
-  return config;
-}, {} as { [K in Routes]: Urls });
+const NAV: RoutesToUrls = PAGES.reduce<RoutesToUrls>((config, page) => {
+  return { ...config, [page.route]: page.url };
+}, {} as RoutesToUrls);
 
-export const router = createRouter(NAV as B);
+export const router = createRouter(NAV);
 export const $currentRoute: WritableStore<Routes> = atom(null);

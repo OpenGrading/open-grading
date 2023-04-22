@@ -1,13 +1,11 @@
 import { Card, CardBody, CardHeader, Heading, HStack, Skeleton, Tag } from "@chakra-ui/react";
 import { useStore } from "@nanostores/react";
 import { useState } from "react";
-import { createFetcherStore } from "../shared/fetcher/store";
-import type { UserProfile } from "../shared/user/model";
+import { createFetcherStore } from "../app/fetcher/store";
+import { UserProfileDTO } from "../shared/api";
 
 const createProfileStore = (userId: string) => () =>
-  createFetcherStore<{ userProfile: UserProfile }, Error>([
-    `/users/${userId}`,
-  ]);
+  createFetcherStore<{ userProfile: UserProfileDTO }, Error>([`/users/${userId}`]);
 
 interface UserProfileProps {
   userId: string;
