@@ -1,6 +1,5 @@
 import logging
 
-from prisma.enums import GradeSystemType
 from prisma.models import Grade_System, Grade_System_Variant
 
 from ogr.db import DB

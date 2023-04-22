@@ -14,7 +14,7 @@ class NewUserDTO(UserBase):
 
 
 class UserDTO(UserBase):
-    id: int
+    id: str
 
 
 class UserProfileDTO(UserDTO):

@@ -39,7 +39,7 @@ async def update_user(user: UserDTO) -> User | None:
                 "last_name": user.last_name,
                 "email": user.email,
             },
-            where={"id": user.id},
+            where={"id": int(user.id)},
         )
 
 
